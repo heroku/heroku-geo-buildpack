@@ -1,0 +1,29 @@
+#!/bin/bash
+
+VERSION=$1
+
+if [ "$VERSION" == "" ]; then
+  echo "You must pass desired version of PROJ"
+  exit 1
+fi
+
+# workspace directory
+workspace="$(mktemp -d)"
+
+# output directory
+output="$(mktemp -d)"
+
+# build and package proj
+pushd $workspace
+curl http://download.osgeo.org/proj/proj-$VERSION.tar.gz -s -o - | tar zxf -
+pushd PROJ-$VERSION
+./configure --prefix=$output
+make
+make install
+
+pushd $output
+tar -czf PROJ-$VERSION.tar.gz *
+
+if [[ $S3_BUCKET && $AWS_ACCESS_KEY_ID && $AWS_SECRET_ACCESS_KEY ]]; then
+    aws s3 cp PROJ-$VERSION.tar.gz s3://$S3_BUCKET/$STACK/PROJ/
+fi
