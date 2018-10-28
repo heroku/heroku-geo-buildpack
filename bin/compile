@@ -30,6 +30,8 @@ install_lib() {
             echo "-----> Found $LIBRARY-$(cat .heroku-geo-buildpack/$LIBRARY-version), removing."
             rm -fr $VENDOR_DIR
             vendor_lib "$LIBRARY" "$VERSION" "$VENDOR_DIR"
+        else
+            echo "-----> Using $LIBRARY-$(cat .heroku-geo-buildpack/$LIBRARY-version) from cache."
         fi
     else
         vendor_lib "$LIBRARY" "$VERSION" "$VENDOR_DIR"
