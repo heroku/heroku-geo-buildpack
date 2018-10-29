@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo "Geo Packages (gdal/geos/proj)"
+echo "Geo Packages (GDAL/GEOS/PROJ)"
 exit 0
