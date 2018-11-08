@@ -16,7 +16,7 @@ output="$(mktemp -d)"
 # build and package gdal
 pushd $workspace
 curl http://download.osgeo.org/gdal/$VERSION/gdal-$VERSION.tar.gz -s -o - | tar zxf -
-pushd GDAL-$VERSION
+pushd gdal-$VERSION
 ./configure --prefix=$output
 make
 make install
@@ -25,5 +25,5 @@ pushd $output
 tar -czf GDAL-$VERSION.tar.gz *
 
 if [[ $S3_BUCKET && $AWS_ACCESS_KEY_ID && $AWS_SECRET_ACCESS_KEY ]]; then
-    aws s3 cp GDAL-$VERSION.tar.gz s3://$S3_BUCKET/$STACK/GDAL/
+    aws s3 cp --acl public-read GDAL-$VERSION.tar.gz s3://$S3_BUCKET/$STACK/GDAL/
 fi

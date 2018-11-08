@@ -16,7 +16,7 @@ output="$(mktemp -d)"
 # build and package geos
 pushd $workspace
 curl http://download.osgeo.org/geos/geos-$VERSION.tar.bz2 -s -o - | tar xjf -
-pushd GEOS-$VERSION
+pushd geos-$VERSION
 ./configure --prefix=$output
 make
 make install
@@ -25,5 +25,5 @@ pushd $output
 tar -czf GEOS-$VERSION.tar.gz *
 
 if [[ $S3_BUCKET && $AWS_ACCESS_KEY_ID && $AWS_SECRET_ACCESS_KEY ]]; then
-    aws s3 cp GEOS-$VERSION.tar.gz s3://$S3_BUCKET/$STACK/GEOS/
+    aws s3 cp --acl public-read GEOS-$VERSION.tar.gz s3://$S3_BUCKET/$STACK/GEOS/
 fi

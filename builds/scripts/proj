@@ -16,7 +16,7 @@ output="$(mktemp -d)"
 # build and package proj
 pushd $workspace
 curl http://download.osgeo.org/proj/proj-$VERSION.tar.gz -s -o - | tar zxf -
-pushd PROJ-$VERSION
+pushd proj-$VERSION
 ./configure --prefix=$output
 make
 make install
@@ -25,5 +25,5 @@ pushd $output
 tar -czf PROJ-$VERSION.tar.gz *
 
 if [[ $S3_BUCKET && $AWS_ACCESS_KEY_ID && $AWS_SECRET_ACCESS_KEY ]]; then
-    aws s3 cp PROJ-$VERSION.tar.gz s3://$S3_BUCKET/$STACK/PROJ/
+    aws s3 cp --acl public-read PROJ-$VERSION.tar.gz s3://$S3_BUCKET/$STACK/PROJ/
 fi
