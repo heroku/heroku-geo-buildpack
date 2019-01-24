@@ -17,7 +17,7 @@ output="$(mktemp -d)"
 pushd $workspace
 curl http://download.osgeo.org/gdal/$VERSION/gdal-$VERSION.tar.gz -s -o - | tar zxf -
 pushd gdal-$VERSION
-./configure --prefix=$output
+./configure --prefix=$output --with-python
 make
 make install
 
