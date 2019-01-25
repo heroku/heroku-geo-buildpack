@@ -46,8 +46,8 @@ GDAL_VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor/gdal"
 GEOS_VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor/geos"
 PROJ_VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor/proj"
 
-DEFAULT_GDAL_VERSION="2.3.2"
-DEFAULT_GEOS_VERSION="3.7.0"
+DEFAULT_GDAL_VERSION="2.4.0"
+DEFAULT_GEOS_VERSION="3.7.1"
 DEFAULT_PROJ_VERSION="5.2.0"
 
 if [ -d "$ENV_DIR/GDAL_VERSION" ]; then
