@@ -17,7 +17,7 @@ output="$(mktemp -d)"
 pushd $workspace
 curl http://download.osgeo.org/gdal/$VERSION/gdal-$VERSION.tar.gz -s -o - | tar zxf -
 pushd gdal-$VERSION
-./configure --prefix=$output --with-python
+./configure --prefix=$output --without-jasper
 make
 make install
 
