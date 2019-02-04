@@ -75,7 +75,7 @@ mkdir -p "$CACHE_DIR/.heroku-geo-buildpack"
 cp -R "$CACHE_DIR/.heroku-geo-buildpack" "$BUILD_DIR/.heroku-geo-buildpack" &> /dev/null || true
 
 # If we have recorded the stack, and it has changed, remove all files are reinstall for new stack
-if [ -f "$BUILD_DIR/.heroku-geo-buildpack/stack" ] && [[ $(cat $BUILD_TEST_DIR/stack) == $STACK ]]; then
+if [ -f "$BUILD_DIR/.heroku-geo-buildpack/stack" ] && [[ $(cat "$BUILD_DIR/.heroku-geo-buildpack/stack") == $STACK ]]; then
     rm -r "$BUILD_DIR/.heroku-geo-buildpack"
 fi
 
