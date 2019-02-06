@@ -43,9 +43,8 @@ CACHE_DIR=$2
 ENV_DIR=$3
 BP_DIR=$(cd "$(dirname "${0:-}")"; cd ..; pwd)
 
-GDAL_VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor/gdal"
-GEOS_VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor/geos"
-PROJ_VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor/proj"
+VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor"
+
 
 DEFAULT_GDAL_VERSION="2.4.0"
 DEFAULT_GEOS_VERSION="3.7.1"
@@ -79,9 +78,9 @@ if [ -f "$BUILD_DIR/.heroku-geo-buildpack/stack" ] && [[ $(cat "$BUILD_DIR/.hero
     rm -r "$BUILD_DIR/.heroku-geo-buildpack"
 fi
 
-install_lib "GDAL" "$GDAL_VERSION" "$GDAL_VENDOR_DIR"
-install_lib "GEOS" "$GEOS_VERSION" "$GEOS_VENDOR_DIR"
-install_lib "PROJ" "$PROJ_VERSION" "$PROJ_VENDOR_DIR"
+install_lib "GDAL" "$GDAL_VERSION" "$VENDOR_DIR"
+install_lib "GEOS" "$GEOS_VERSION" "$VENDOR_DIR"
+install_lib "PROJ" "$PROJ_VERSION" "$VENDOR_DIR"
 
 # Store what stack we are on so that we can clear the cache if it changes.
 echo "$STACK" > "$CACHE_DIR/.heroku-geo-buildpack/stack"
@@ -99,10 +98,8 @@ PROFILE_PATH="$BUILD_DIR/.profile.d/heroku-geo-buildpack.sh"
 mkdir -p $(dirname $PROFILE_PATH)
 
 # Export vars
-echo 'export GDAL_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/gdal/lib/libgdal.so"' >> $PROFILE_PATH
-echo 'export GEOS_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/geos/lib/libgeos_c.so"' >> $PROFILE_PATH
-echo 'export PROJ4_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/proj4/lib/libproj.so"' >> $PROFILE_PATH
-echo 'export PATH="$HOME/.heroku-geo-buildpack/vendor/gdal/bin:$PATH"' >> $PROFILE_PATH
-echo 'export PATH="$HOME/.heroku-geo-buildpack/vendor/geos/bin:$PATH"' >> $PROFILE_PATH
-echo 'export LD_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/gdal/lib:$LD_LIBRARY_PATH"' >> $PROFILE_PATH
-echo 'export LD_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/geos/lib:$LD_LIBRARY_PATH"' >> $PROFILE_PATH
+echo 'export GDAL_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/lib/libgdal.so"' >> $PROFILE_PATH
+echo 'export GEOS_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/lib/libgeos_c.so"' >> $PROFILE_PATH
+echo 'export PROJ4_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/lib/libproj.so"' >> $PROFILE_PATH
+echo 'export PATH="$HOME/.heroku-geo-buildpack/vendor/bin:$PATH"' >> $PROFILE_PATH
+echo 'export LD_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/lib:$LD_LIBRARY_PATH"' >> $PROFILE_PATH
