@@ -5,7 +5,6 @@ vendor_lib() {
     VERSION=$2
     VENDOR_DIR=$3
 
-    # Install GDAL
     echo "-----> Installing $LIBRARY-$VERSION"
     LIBRARY_URL="https://bucketeer-9aa8f376-a619-404c-b004-6db0317bcfe8.s3.amazonaws.com/$STACK/$LIBRARY/$LIBRARY-$VERSION.tar.gz"
 
@@ -15,27 +14,6 @@ vendor_lib() {
       echo " !     Aborting."
       exit 1
     fi
-
-    # Store library version for future reference
-    echo "$VERSION" > "$CACHE_DIR/.heroku-geo-buildpack/$LIBRARY-version"
-}
-
-install_lib() {
-    LIBRARY=$1
-    VERSION=$2
-    VENDOR_DIR=$3
-
-    if [ -f "$BUILD_DIR/.heroku-geo-buildpack/$LIBRARY-version" ]; then
-        if [ ! "$(cat $BUILD_DIR/.heroku-geo-buildpack/$LIBRARY-version)" = "$VERSION" ]; then
-            echo "-----> Found $LIBRARY-$(cat $BUILD_DIR/.heroku-geo-buildpack/$LIBRARY-version), removing."
-            rm -fr $VENDOR_DIR
-            vendor_lib "$LIBRARY" "$VERSION" "$VENDOR_DIR"
-        else
-            echo "-----> Using $LIBRARY-$(cat $BUILD_DIR/.heroku-geo-buildpack/$LIBRARY-version) from cache."
-        fi
-    else
-        vendor_lib "$LIBRARY" "$VERSION" "$VENDOR_DIR"
-    fi
 }
 
 BUILD_DIR=$1
@@ -44,7 +22,6 @@ ENV_DIR=$3
 BP_DIR=$(cd "$(dirname "${0:-}")"; cd ..; pwd)
 
 VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor"
-
 
 DEFAULT_GDAL_VERSION="2.4.0"
 DEFAULT_GEOS_VERSION="3.7.1"
@@ -68,22 +45,9 @@ else
     PROJ_VERSION=$DEFAULT_PROJ_VERSION
 fi
 
-# Create the cache directory, if it doesn't exist.
-mkdir -p "$CACHE_DIR/.heroku-geo-buildpack"
-
-cp -R "$CACHE_DIR/.heroku-geo-buildpack" "$BUILD_DIR/.heroku-geo-buildpack" &> /dev/null || true
-
-# If we have recorded the stack, and it has changed, remove all files are reinstall for new stack
-if [ -f "$BUILD_DIR/.heroku-geo-buildpack/stack" ] && [[ $(cat "$BUILD_DIR/.heroku-geo-buildpack/stack") == $STACK ]]; then
-    rm -r "$BUILD_DIR/.heroku-geo-buildpack"
-fi
-
-install_lib "GDAL" "$GDAL_VERSION" "$VENDOR_DIR"
-install_lib "GEOS" "$GEOS_VERSION" "$VENDOR_DIR"
-install_lib "PROJ" "$PROJ_VERSION" "$VENDOR_DIR"
-
-# Store what stack we are on so that we can clear the cache if it changes.
-echo "$STACK" > "$CACHE_DIR/.heroku-geo-buildpack/stack"
+vendor_lib "GDAL" "$GDAL_VERSION" "$VENDOR_DIR"
+vendor_lib "GEOS" "$GEOS_VERSION" "$VENDOR_DIR"
+vendor_lib "PROJ" "$PROJ_VERSION" "$VENDOR_DIR"
 
 # Add some environment variables that are available to the next buildpacks, to ensure that pip can find the
 # GDAL installation as this is needed to pip install GDAL
