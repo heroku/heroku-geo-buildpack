@@ -11,20 +11,26 @@ DEFAULT_GDAL_VERSION="2.4.0"
 DEFAULT_GEOS_VERSION="3.7.1"
 DEFAULT_PROJ_VERSION="5.2.0"
 
-if [ -d "$ENV_DIR/GDAL_VERSION" ]; then
+if [ -f "$ENV_DIR/GDAL_VERSION" ]; then
     GDAL_VERSION=$(cat $ENV_DIR/GDAL_VERSION)
+elif [ -f "$CACHE_DIR/.heroku-geo-buildpack/GDAL-version" ]
+    GDAL_VERSION=$(cat $CACHE_DIR/.heroku-geo-buildpack/GDAL-version)
 else
     GDAL_VERSION=$DEFAULT_GDAL_VERSION
 fi
 
-if [ -d "$ENV_DIR/GEOS_VERSION" ]; then
+if [ -f "$ENV_DIR/GEOS_VERSION" ]; then
     GEOS_VERSION=$(cat $ENV_DIR/GEOS_VERSION)
+elif [ -f "$CACHE_DIR/.heroku-geo-buildpack/GEOS-version" ]
+    GEOS_VERSION=$(cat $CACHE_DIR/.heroku-geo-buildpack/GEOS-version)
 else
     GEOS_VERSION=$DEFAULT_GEOS_VERSION
 fi
 
-if [ -d "$ENV_DIR/PROJ_VERSION" ]; then
+if [ -f "$ENV_DIR/PROJ_VERSION" ]; then
     PROJ_VERSION=$(cat $ENV_DIR/PROJ_VERSION)
+elif [ -f "$CACHE_DIR/.heroku-geo-buildpack/PROJ-version" ]
+    PROJ_VERSION=$(cat $CACHE_DIR/.heroku-geo-buildpack/PROJ-version)
 else
     PROJ_VERSION=$DEFAULT_PROJ_VERSION
 fi
@@ -67,4 +73,7 @@ vendor_lib() {
       echo " !     Aborting."
       exit 1
     fi
+
+    # Store library version for future reference
+    echo "$VERSION" > "$CACHE_DIR/.heroku-geo-buildpack/$LIBRARY-version"
 }
