@@ -1,5 +1,24 @@
 #!/bin/bash
 
+vendor_lib() {
+    LIBRARY=$1
+    VERSION=$2
+    VENDOR_DIR=$3
+
+    echo "-----> Installing $LIBRARY-$VERSION"
+    LIBRARY_URL="https://bucketeer-9aa8f376-a619-404c-b004-6db0317bcfe8.s3.amazonaws.com/$STACK/$LIBRARY/$LIBRARY-$VERSION.tar.gz"
+
+    mkdir -p $VENDOR_DIR
+    if ! curl "${LIBRARY_URL}" -s | tar zxv -C $VENDOR_DIR &> /dev/null; then
+      echo " !     Requested $LIBRARY Version ($VERSION) is not available for this stack ($STACK)."
+      echo " !     Aborting."
+      exit 1
+    fi
+
+    # Store library version for future reference
+    echo "$VERSION" > "$CACHE_DIR/.heroku-geo-buildpack/$LIBRARY-version"
+}
+
 BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
@@ -57,23 +76,3 @@ echo 'export GEOS_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/lib/libgeos_c
 echo 'export PROJ4_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/lib/libproj.so"' >> $PROFILE_PATH
 echo 'export PATH="$HOME/.heroku-geo-buildpack/vendor/bin:$PATH"' >> $PROFILE_PATH
 echo 'export LD_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/lib:$LD_LIBRARY_PATH"' >> $PROFILE_PATH
-
-
-vendor_lib() {
-    LIBRARY=$1
-    VERSION=$2
-    VENDOR_DIR=$3
-
-    echo "-----> Installing $LIBRARY-$VERSION"
-    LIBRARY_URL="https://bucketeer-9aa8f376-a619-404c-b004-6db0317bcfe8.s3.amazonaws.com/$STACK/$LIBRARY/$LIBRARY-$VERSION.tar.gz"
-
-    mkdir -p $VENDOR_DIR
-    if ! curl "${LIBRARY_URL}" -s | tar zxv -C $VENDOR_DIR &> /dev/null; then
-      echo " !     Requested $LIBRARY Version ($VERSION) is not available for this stack ($STACK)."
-      echo " !     Aborting."
-      exit 1
-    fi
-
-    # Store library version for future reference
-    echo "$VERSION" > "$CACHE_DIR/.heroku-geo-buildpack/$LIBRARY-version"
-}
