@@ -13,7 +13,7 @@ DEFAULT_PROJ_VERSION="5.2.0"
 
 if [ -f "$ENV_DIR/GDAL_VERSION" ]; then
     GDAL_VERSION=$(cat $ENV_DIR/GDAL_VERSION)
-elif [ -f "$CACHE_DIR/.heroku-geo-buildpack/GDAL-version" ]
+elif [ -f "$CACHE_DIR/.heroku-geo-buildpack/GDAL-version" ]; then
     GDAL_VERSION=$(cat $CACHE_DIR/.heroku-geo-buildpack/GDAL-version)
 else
     GDAL_VERSION=$DEFAULT_GDAL_VERSION
@@ -21,7 +21,7 @@ fi
 
 if [ -f "$ENV_DIR/GEOS_VERSION" ]; then
     GEOS_VERSION=$(cat $ENV_DIR/GEOS_VERSION)
-elif [ -f "$CACHE_DIR/.heroku-geo-buildpack/GEOS-version" ]
+elif [ -f "$CACHE_DIR/.heroku-geo-buildpack/GEOS-version" ]; then
     GEOS_VERSION=$(cat $CACHE_DIR/.heroku-geo-buildpack/GEOS-version)
 else
     GEOS_VERSION=$DEFAULT_GEOS_VERSION
@@ -29,7 +29,7 @@ fi
 
 if [ -f "$ENV_DIR/PROJ_VERSION" ]; then
     PROJ_VERSION=$(cat $ENV_DIR/PROJ_VERSION)
-elif [ -f "$CACHE_DIR/.heroku-geo-buildpack/PROJ-version" ]
+elif [ -f "$CACHE_DIR/.heroku-geo-buildpack/PROJ-version" ]; then
     PROJ_VERSION=$(cat $CACHE_DIR/.heroku-geo-buildpack/PROJ-version)
 else
     PROJ_VERSION=$DEFAULT_PROJ_VERSION
