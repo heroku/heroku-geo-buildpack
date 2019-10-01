@@ -27,7 +27,7 @@ Default Versions
 The buildpack will install the following version by default:
 
 GDAL - 2.4.0</br>
-GEOS - 3.7.1</br>
+GEOS - 3.7.2</br>
 PROJ - 5.2.0</br>
 
 You can change the version of each library that will be installed by setting the `GDAL_VERSION`, `GEOS_VERSION` or `PROJ_VERSION` config variables.

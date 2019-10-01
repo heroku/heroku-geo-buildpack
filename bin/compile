@@ -27,7 +27,7 @@ BP_DIR=$(cd "$(dirname "${0:-}")"; cd ..; pwd)
 VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor"
 
 DEFAULT_GDAL_VERSION="2.4.0"
-DEFAULT_GEOS_VERSION="3.7.1"
+DEFAULT_GEOS_VERSION="3.7.2"
 DEFAULT_PROJ_VERSION="5.2.0"
 
 if [ -f "$ENV_DIR/GDAL_VERSION" ]; then
@@ -65,7 +65,6 @@ echo "export LIBRARY_PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/lib:\$LIBRAR
 echo "export LD_LIBRARY_PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/lib:\$LD_LIBRARY_PATH\"" >> "$BP_DIR/export"
 echo "export CPLUS_INCLUDE_PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/include:\$CPLUS_INCLUDE_PATH\"" >> "$BP_DIR/export"
 echo "export C_INCLUDE_PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/include:\$C_INCLUDE_PATH\"" >> "$BP_DIR/export"
-
 
 PROFILE_PATH="$BUILD_DIR/.profile.d/heroku-geo-buildpack.sh"
 mkdir -p $(dirname $PROFILE_PATH)
