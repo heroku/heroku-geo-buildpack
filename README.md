@@ -13,11 +13,10 @@ This buildpack is designed to be used in combination with other buildpacks by us
 
 Ensure that Heroku Buildpack Geo is the first buildpack on your list of buildpacks:
 
-
 ```
 $ heroku buildpacks
 === Buildpack URLs
-1. https://github.com/KevinBrolly/heroku-geo-buildpack.git
+1. https://github.com/heroku/heroku-geo-buildpack.git
 2. heroku/python
 ```
 
