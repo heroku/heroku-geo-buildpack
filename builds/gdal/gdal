@@ -16,7 +16,8 @@ deploy_gdal() {
     ./configure \
         --prefix=$output \
         --without-jasper \
-        --with-libkml
+        --with-libkml \
+        --disable-static
     make
     make install
 
