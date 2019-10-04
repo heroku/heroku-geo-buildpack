@@ -2,7 +2,7 @@
 
 deploy_gdal() {
     VERSION=$1
-    
+
     # workspace directory
     workspace="$(mktemp -d)"
 
@@ -13,7 +13,10 @@ deploy_gdal() {
     pushd $workspace
     curl http://download.osgeo.org/gdal/$VERSION/gdal-$VERSION.tar.gz -s -o - | tar zxf -
     pushd gdal-$VERSION
-    ./configure --prefix=$output --without-jasper
+    ./configure \
+        --prefix=$output \
+        --without-jasper \
+        --with-libkml
     make
     make install
 
