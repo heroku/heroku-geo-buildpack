@@ -55,7 +55,7 @@ else
 fi
 
 # Install libkml-dev (required by gdal)
-echo "-----> Installing libkml dependency"
+topic "-----> Installing libkml dependency"
 apt-get -q -y --no-install-recommends install libkml-dev | indent
 
 vendor_lib "GDAL" "$GDAL_VERSION" "$VENDOR_DIR"
