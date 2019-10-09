@@ -11,9 +11,10 @@ deploy_gdal() {
 
     # build and package gdal
     pushd $workspace
+
     curl http://download.osgeo.org/gdal/$VERSION/gdal-$VERSION.tar.gz -s -o - | tar zxf -
     pushd gdal-$VERSION
-    ./configure --prefix=$output --without-jasper
+    ./configure --prefix=$output --without-jasper --with-libkml="/app/.heroku-geo-buildpack/vendor"
     make
     make install
 

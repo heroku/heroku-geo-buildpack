@@ -5,4 +5,4 @@ RUN apt-get -q -y --no-install-recommends install awscli
 
 ADD . /heroku-geo-buildpack
 
-WORKDIR "/heroku-geo-buildpack/builds"
+WORKDIR "/heroku-geo-buildpack"
