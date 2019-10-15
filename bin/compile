@@ -73,5 +73,6 @@ mkdir -p $(dirname $PROFILE_PATH)
 echo 'export GDAL_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/lib/libgdal.so"' >> $PROFILE_PATH
 echo 'export GEOS_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/lib/libgeos_c.so"' >> $PROFILE_PATH
 echo 'export PROJ4_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/lib/libproj.so"' >> $PROFILE_PATH
+echo 'export GDAL_DATA="$HOME/.heroku-geo-buildpack/vendor/share/gdal"' >> $PROFILE_PATH
 echo 'export PATH="$HOME/.heroku-geo-buildpack/vendor/bin:$PATH"' >> $PROFILE_PATH
 echo 'export LD_LIBRARY_PATH="$HOME/.heroku-geo-buildpack/vendor/lib:$LD_LIBRARY_PATH"' >> $PROFILE_PATH
