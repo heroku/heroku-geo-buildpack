@@ -2,23 +2,20 @@
 
 deploy_gdal() {
     VERSION=$1
-    
-    # workspace directory
-    workspace="$(mktemp -d)"
-
-    # output directory
-    output="$(mktemp -d)"
+    WORKSPACE=$2
+    OUTPUT=$3
 
     # build and package gdal
-    pushd $workspace
+    pushd $WORKSPACE
 
     curl http://download.osgeo.org/gdal/$VERSION/gdal-$VERSION.tar.gz -s -o - | tar zxf -
     pushd gdal-$VERSION
-    ./configure --prefix=$output --without-jasper --with-libkml="/app/.heroku-geo-buildpack/vendor"
+
+    ./configure --prefix=$OUTPUT --without-jasper --with-libkml=$OUTPUT
     make
     make install
 
-    pushd $output
+    pushd $OUTPUT
     tar -czf GDAL-$VERSION.tar.gz *
 
     if [[ $S3_BUCKET && $AWS_ACCESS_KEY_ID && $AWS_SECRET_ACCESS_KEY ]]; then

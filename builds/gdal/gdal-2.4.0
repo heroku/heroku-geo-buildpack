@@ -4,13 +4,17 @@ CURRENT_DIR=$(cd "$(dirname "$0")"; pwd)
 ROOT_DIR=$(dirname "$CURRENT_DIR")
 source $ROOT_DIR/dependencies/utils
 
-# We want to include google's libkml in out gdal build
-vendor_dependency "libkml" "1.3.0" "/app/.heroku-geo-buildpack/vendor"
-
-# Ensure we can find our dependency
-export CPATH=$VENDOR_DIR/include:$CPATH
-export LIBRARY_PATH=$VENDOR_DIR/lib:$LIBRARY_PATH
-export LD_LIBRARY_PATH=$VENDOR_DIR/lib:$LD_LIBRARY_PATH
-
 source $(dirname $0)/gdal
-deploy_gdal "2.4.0"
+
+WORKSPACE="$(mktemp -d)"
+OUTPUT="$(mktemp -d)"
+
+# Ensure we can find any dependencies
+export CPATH=$OUTPUT/include:$CPATH
+export LIBRARY_PATH=$OUTPUT/lib:$LIBRARY_PATH
+export LD_LIBRARY_PATH=$OUTPUT/lib:$LD_LIBRARY_PATH
+
+# We want to include google's libkml in our gdal build
+vendor_dependency "libkml" "1.3.0" $OUTPUT
+
+deploy_gdal "2.4.0" $WORKSPACE $OUTPUT
