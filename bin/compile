@@ -15,6 +15,7 @@ vendor_lib() {
       exit 1
     fi
 
+    mkdir -p "$CACHE_DIR/.heroku-geo-buildpack/"
     # Store library version for future reference
     echo "$VERSION" > "$CACHE_DIR/.heroku-geo-buildpack/$LIBRARY-version"
 }
