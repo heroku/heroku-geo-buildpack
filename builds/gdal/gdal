@@ -11,7 +11,7 @@ deploy_gdal() {
     curl http://download.osgeo.org/gdal/$VERSION/gdal-$VERSION.tar.gz -s -o - | tar zxf -
     pushd gdal-$VERSION
 
-    ./configure --prefix=$OUTPUT --without-jasper --with-libkml=$OUTPUT
+    ./configure --prefix=$OUTPUT --enable-static=no --without-jasper --with-libkml=$OUTPUT
     make
     make install
 
