@@ -13,7 +13,7 @@ deploy_geos() {
     pushd $workspace
     curl http://download.osgeo.org/geos/geos-$VERSION.tar.bz2 -s -o - | tar xjf -
     pushd geos-$VERSION
-    ./configure --prefix=$output
+    ./configure --prefix=$output --enable-static=no
     make
     make install
 
