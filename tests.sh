@@ -44,6 +44,17 @@ testDefaultVersionInstall() {
   assertContains "$stdout" "-----> Installing PROJ-5.2.0"
 }
 
+testBuildpackEnv() {
+  compile
+  PROFILE=$(<"$BUILDPACK_DIR/export")
+
+  assertContains "$PROFILE" "PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/bin:\$PATH\""
+  assertContains "$PROFILE" "LIBRARY_PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/lib:\$LIBRARY_PATH\""
+  assertContains "$PROFILE" "LD_LIBRARY_PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/lib:\$LD_LIBRARY_PATH\""
+  assertContains "$PROFILE" "CPLUS_INCLUDE_PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/include:\$CPLUS_INCLUDE_PATH\""
+  assertContains "$PROFILE" "C_INCLUDE_PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/include:\$C_INCLUDE_PATH\""
+}
+
 testAvailableVersionInstall() {
   setEnvVar "GDAL_VERSION" "2.4.2"
 
