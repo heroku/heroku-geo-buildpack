@@ -33,31 +33,31 @@ release()
 }
 
 setEnvVar () {
-    echo "$2" >> "$ENV_DIR/$1"
+  echo "$2" >> "$ENV_DIR/$1"
 }
 
 testDefaultVersionInstall() {
-    stdout=$(compile)
-    assertEquals "0" "$?"
-    assertContains "$stdout" "-----> Installing GDAL-2.4.0"
-    assertContains "$stdout" "-----> Installing GEOS-3.7.2"
-    assertContains "$stdout" "-----> Installing PROJ-5.2.0"
+  stdout=$(compile)
+  assertEquals "0" "$?"
+  assertContains "$stdout" "-----> Installing GDAL-2.4.0"
+  assertContains "$stdout" "-----> Installing GEOS-3.7.2"
+  assertContains "$stdout" "-----> Installing PROJ-5.2.0"
 }
 
 testAvailableVersionInstall() {
-    setEnvVar "GDAL_VERSION" "2.4.2"
+  setEnvVar "GDAL_VERSION" "2.4.2"
 
-    stdout=$(compile)
-    assertEquals "0" "$?"
-    assertContains "$stdout" "-----> Installing GDAL-2.4.2"
+  stdout=$(compile)
+  assertEquals "0" "$?"
+  assertContains "$stdout" "-----> Installing GDAL-2.4.2"
 }
 
 testUnavailableVersionInstall() {
-    setEnvVar "GDAL_VERSION" "9.9.9"
-    
-    stdout=$(compile)
-    assertEquals "1" "$?"
-    assertContains "$stdout" "Requested GDAL Version (9.9.9) is not available for this stack ($STACK)."
+  setEnvVar "GDAL_VERSION" "9.9.9"
+
+  stdout=$(compile)
+  assertEquals "1" "$?"
+  assertContains "$stdout" "Requested GDAL Version (9.9.9) is not available for this stack ($STACK)."
 }
 
 
@@ -65,4 +65,5 @@ command -v shunit2 || {
   curl -sLo /usr/local/bin/shunit2 https://raw.githubusercontent.com/kward/shunit2/master/shunit2
   chmod +x /usr/local/bin/shunit2
 }
+# shellcheck disable=SC1091
 source shunit2
