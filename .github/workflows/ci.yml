@@ -1,0 +1,22 @@
+name: CI
+on:
+  - push
+  - pull_request
+
+jobs:
+
+  shunit2:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        stack:
+          - name: heroku-16
+            image: heroku/heroku:16-build
+          - name: heroku-18
+            image: heroku/heroku:18-build
+    container: ${{ matrix.stack.image }}
+    steps:
+      - uses: actions/checkout@v2
+      - run: ./tests
+        env:
+          STACK: ${{ matrix.stack.name }}
