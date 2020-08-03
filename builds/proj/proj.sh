@@ -18,6 +18,8 @@ deploy_proj() {
     make install
 
     pushd "$output" || exit 1
+    for i in lib/*; do strip -s $i 2>/dev/null || /bin/true; done
+    for i in bin/*; do strip -s $i 2>/dev/null || /bin/true; done
     tar -czf "PROJ-$VERSION.tar.gz" ./*
 
     if [[ $S3_BUCKET && $AWS_ACCESS_KEY_ID && $AWS_SECRET_ACCESS_KEY ]]; then
