@@ -17,7 +17,7 @@ build-heroku-16:
 	@echo
 	@echo "  $$ export S3_BUCKET='heroku-geo-buildpack' # Optional unless deploying"
 	@echo "  $$ export AWS_ACCESS_KEY_ID=foo AWS_SECRET_ACCESS_KEY=bar  # Optional unless deploying"
-	@echo "  $$ ./gdal/gdal-2.4.0"
+	@echo "  $$ ./builds/gdal/gdal-version"
 	@echo
 	@docker run -e STACK="heroku-16" -it --rm buildenv-heroku-16
 
@@ -30,6 +30,6 @@ build-heroku-18:
 	@echo
 	@echo "  $$ export S3_BUCKET='heroku-geo-buildpack' # Optional unless deploying"
 	@echo "  $$ export AWS_ACCESS_KEY_ID=foo AWS_SECRET_ACCESS_KEY=bar  # Optional unless deploying"
-	@echo "  $$ ./gdal/gdal-2.4.0"
+	@echo "  $$ ./builds/gdal/gdal-version"
 	@echo
 	@docker run -e STACK="heroku-18" -it --rm buildenv-heroku-18
