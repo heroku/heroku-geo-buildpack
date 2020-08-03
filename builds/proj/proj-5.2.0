@@ -1,4 +1,0 @@
-#!/bin/bash
-
-source $(dirname $0)/proj
-deploy_proj "5.2.0"
