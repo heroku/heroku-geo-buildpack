@@ -45,7 +45,7 @@ testDefaultVersionInstall() {
 }
 
 testBuildpackEnv() {
-  compile
+  stdout=$(compile)
   PROFILE=$(<"$BUILDPACK_DIR/export")
 
   assertContains "$PROFILE" "PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/bin:\$PATH\""
