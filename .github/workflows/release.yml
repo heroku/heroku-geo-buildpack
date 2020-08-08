@@ -1,33 +1,10 @@
-name: CI
+name: Release
 on:
-  - push
-  - pull_request
+  push:
+    branches:
+      - master
 
 jobs:
-
-  shellcheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: sudo apt-get install shellcheck -y
-      - run: shellcheck -x bin/*
-      - run: find . -name "*.sh" -exec shellcheck -x {} \;
-
-  shunit2:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        stack:
-          - name: heroku-16
-            image: heroku/heroku:16-build
-          - name: heroku-18
-            image: heroku/heroku:18-build
-    container: ${{ matrix.stack.image }}
-    steps:
-      - uses: actions/checkout@v2
-      - run: ./tests.sh
-        env:
-          STACK: ${{ matrix.stack.name }}
 
   gdal:
     runs-on: ubuntu-latest
@@ -48,6 +25,9 @@ jobs:
       - run: ./builds/gdal/gdal-${{ matrix.version }}.sh
         env:
           STACK: ${{ matrix.stack.name }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   geos:
     runs-on: ubuntu-latest
@@ -67,6 +47,9 @@ jobs:
       - run: ./builds/geos/geos-${{ matrix.version }}.sh
         env:
           STACK: ${{ matrix.stack.name }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   proj:
     runs-on: ubuntu-latest
@@ -86,3 +69,6 @@ jobs:
       - run: ./builds/proj/proj-${{ matrix.version }}.sh
         env:
           STACK: ${{ matrix.stack.name }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
