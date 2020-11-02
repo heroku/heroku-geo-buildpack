@@ -16,7 +16,7 @@ pushd "$workspace" || exit 1
 
 curl -sL https://github.com/libkml/libkml/tarball/1.3.0 -s -o - | tar zxf -
 pushd libkml-libkml-0da164d || exit 1
-cmake -DCMAKE_INSTALL_PREFIX="$output" --enable-static=no
+cmake -DCMAKE_INSTALL_PREFIX="$output"
 make
 make install
 
