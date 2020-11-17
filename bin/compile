@@ -59,9 +59,13 @@ vendor_lib "GDAL" "$GDAL_VERSION" "$VENDOR_DIR"
 vendor_lib "GEOS" "$GEOS_VERSION" "$VENDOR_DIR"
 vendor_lib "PROJ" "$PROJ_VERSION" "$VENDOR_DIR"
 
-# Add some environment variables that are available to the next buildpacks, to ensure that pip can find the
-# GDAL installation as this is needed to pip install GDAL
+# Set environment variables for later buildpacks, so that the GDAL installation
+# can be found when pip installing GDAL, or by Django (eg during collectstatic).
 {
+  echo "export GDAL_LIBRARY_PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/lib/libgdal.so\""
+  echo "export GEOS_LIBRARY_PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/lib/libgeos_c.so\""
+  echo "export PROJ4_LIBRARY_PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/lib/libproj.so\""
+  echo "export GDAL_DATA=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/share/gdal\""
   echo "export PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/bin:\$PATH\""
   echo "export LIBRARY_PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/lib:\$LIBRARY_PATH\""
   echo "export LD_LIBRARY_PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/lib:\$LD_LIBRARY_PATH\""
