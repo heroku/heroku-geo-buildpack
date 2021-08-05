@@ -9,7 +9,7 @@ vendor_lib() {
 
     LIBRARY_URL="https://bucketeer-9aa8f376-a619-404c-b004-6db0317bcfe8.s3.amazonaws.com/$STACK/$LIBRARY/$LIBRARY-$VERSION.tar.gz"
     
-    if LIBRARY -eq "PROJ"; then
+    if $LIBRARY -eq "PROJ"; then
         LIBRARY_URL="http://download.osgeo.org/proj/proj-$VERSION.tar.gz"
     fi
 
