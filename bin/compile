@@ -6,7 +6,7 @@ vendor_lib() {
     VENDOR_DIR=$3
 
     echo "-----> Installing $LIBRARY-$VERSION"
-    LIBRARY_URL="https://bucketeer-9aa8f376-a619-404c-b004-6db0317bcfe8.s3.amazonaws.com/$STACK/$LIBRARY/$LIBRARY-$VERSION.tar.gz"
+    LIBRARY_URL="http://download.osgeo.org/proj/proj-8.1.0.tar.gz"
 
     mkdir -p "$VENDOR_DIR"
     if ! curl "${LIBRARY_URL}" -s | tar zxv -C "$VENDOR_DIR" &> /dev/null; then
