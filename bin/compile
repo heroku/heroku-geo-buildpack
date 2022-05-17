@@ -29,8 +29,13 @@ BP_DIR=$(cd "$(dirname "${0:-}")" || exit 1 ; cd ..; pwd)
 VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor"
 
 DEFAULT_GDAL_VERSION="2.4.0"
-DEFAULT_GEOS_VERSION="3.7.2"
+DEFAULT_GEOS_VERSION="3.10.2"
 DEFAULT_PROJ_VERSION="5.2.0"
+
+if [[ "${STACK}" == "heroku-18" ]]; then
+    # Newer GEOS requires CMake 3.13+ which isn't available on Ubuntu 18.04.
+    DEFAULT_GEOS_VERSION="3.7.2"
+fi
 
 if [ -f "$ENV_DIR/GDAL_VERSION" ]; then
     GDAL_VERSION=$(cat "$ENV_DIR/GDAL_VERSION")

@@ -26,7 +26,9 @@ Default Versions
 The buildpack will install the following versions by default *for new apps*:
 
 - GDAL: `2.4.0`
-- GEOS: `3.7.2`
+- GEOS:
+  - Heroku-18: `3.7.2`
+  - Heroku-20 + Heroku-22: `3.10.2`
 - PROJ: `5.2.0`
 
 *Existing apps* that don't specify an explicit version will continue to use the
@@ -39,7 +41,9 @@ Available Versions
 ------------------
 
 - GDAL: `2.4.0`, `2.4.2`
-- GEOS: `3.7.2`
+- GEOS:
+  - Heroku-18: `3.7.2`
+  - Heroku-20 + Heroku-22: `3.7.2`, `3.10.2`
 - PROJ: `5.2.0`
 
 Migrating from heroku/python GEOs support
