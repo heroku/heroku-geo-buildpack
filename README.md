@@ -40,7 +40,7 @@ You can change the version of each library that will be installed by setting the
 Available Versions
 ------------------
 
-- GDAL: `2.4.0`, `2.4.2`
+- GDAL: `2.4.0`, `2.4.2`, `3.5.0`
 - GEOS:
   - Heroku-18: `3.7.2`
   - Heroku-20 + Heroku-22: `3.7.2`, `3.10.2`
