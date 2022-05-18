@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eo pipefail
+
 # We need cmake to build libkml
 echo "-----> Installing cmake"
 apt-get update -qq
