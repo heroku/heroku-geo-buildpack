@@ -8,7 +8,7 @@ deploy_gdal() {
     # build and package gdal.sh
     pushd "$WORKSPACE" || exit 1
 
-    curl "http://download.osgeo.org/gdal/$VERSION/gdal-$VERSION.tar.gz" -s -o - | tar zxf -
+    curl "https://download.osgeo.org/gdal/$VERSION/gdal-$VERSION.tar.gz" -s -o - | tar zxf -
     pushd "gdal-$VERSION" || exit 1
 
     ./configure --prefix="$OUTPUT" --enable-static=no --without-jasper --with-libkml="$OUTPUT" --with-hide-internal-symbols
