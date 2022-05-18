@@ -40,8 +40,13 @@ testDefaultVersionInstall() {
   stdout=$(compile)
   assertEquals "0" "$?"
   assertContains "$stdout" "-----> Installing GDAL-2.4.0"
-  assertContains "$stdout" "-----> Installing GEOS-3.7.2"
   assertContains "$stdout" "-----> Installing PROJ-5.2.0"
+
+  if [[ "${STACK}" == "heroku-18" ]]; then
+    assertContains "$stdout" "-----> Installing GEOS-3.7.2"
+  else
+    assertContains "$stdout" "-----> Installing GEOS-3.10.2"
+  fi
 }
 
 testBuildpackEnv() {
@@ -55,12 +60,26 @@ testBuildpackEnv() {
   assertContains "$PROFILE" "C_INCLUDE_PATH=\"$BUILD_DIR/.heroku-geo-buildpack/vendor/include:\$C_INCLUDE_PATH\""
 }
 
-testAvailableVersionInstall() {
+testSpecifiedVersionInstall() {
   setEnvVar "GDAL_VERSION" "2.4.2"
+  setEnvVar "PROJ_VERSION" "5.2.0"
+
+  if [[ "${STACK}" == "heroku-18" ]]; then
+    setEnvVar "GEOS_VERSION" "3.7.2"
+  else
+    setEnvVar "GEOS_VERSION" "3.10.2"
+  fi
 
   stdout=$(compile)
   assertEquals "0" "$?"
   assertContains "$stdout" "-----> Installing GDAL-2.4.2"
+  assertContains "$stdout" "-----> Installing PROJ-5.2.0"
+
+  if [[ "${STACK}" == "heroku-18" ]]; then
+    assertContains "$stdout" "-----> Installing GEOS-3.7.2"
+  else
+    assertContains "$stdout" "-----> Installing GEOS-3.10.2"
+  fi
 }
 
 testUnavailableVersionInstall() {
