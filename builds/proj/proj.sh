@@ -11,7 +11,7 @@ deploy_proj() {
 
     # build and package proj.sh
     pushd "$workspace" || exit 1
-    curl "https://download.osgeo.org/proj/proj-$VERSION.tar.gz" -s -o - | tar zxf -
+    curl "https://download.osgeo.org/proj/proj-$VERSION.tar.gz" -sSf -o - | tar zxf -
     pushd "proj-$VERSION" || exit 1
     ./configure --prefix="$output" --enable-static=no
     make

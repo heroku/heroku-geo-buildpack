@@ -24,7 +24,7 @@ build-heroku-18:
 	@echo "  $$ export AWS_ACCESS_KEY_ID=foo AWS_SECRET_ACCESS_KEY=bar  # Optional unless deploying"
 	@echo "  $$ ./builds/gdal/gdal-<version>.sh"
 	@echo
-	@docker run -e STACK="heroku-18" -it --rm buildenv-heroku-18
+	@docker run -e STACK="heroku-18" -e S3_BUCKET -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -it --rm buildenv-heroku-18
 
 build-heroku-20:
 	@echo "Creating build environment (heroku-20)..."
@@ -37,7 +37,7 @@ build-heroku-20:
 	@echo "  $$ export AWS_ACCESS_KEY_ID=foo AWS_SECRET_ACCESS_KEY=bar  # Optional unless deploying"
 	@echo "  $$ ./builds/gdal/gdal-<version>.sh"
 	@echo
-	@docker run -e STACK="heroku-20" -it --rm buildenv-heroku-20
+	@docker run -e STACK="heroku-20" -e S3_BUCKET -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -it --rm buildenv-heroku-20
 
 build-heroku-22:
 	@echo "Creating build environment (heroku-22)..."
@@ -50,4 +50,4 @@ build-heroku-22:
 	@echo "  $$ export AWS_ACCESS_KEY_ID=foo AWS_SECRET_ACCESS_KEY=bar  # Optional unless deploying"
 	@echo "  $$ ./builds/gdal/gdal-<version>.sh"
 	@echo
-	@docker run -e STACK="heroku-22" -it --rm buildenv-heroku-22
+	@docker run -e STACK="heroku-22" -e S3_BUCKET -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -it --rm buildenv-heroku-22

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eo pipefail
+
 # shellcheck disable=SC2164
 CURRENT_DIR=$(cd "$(dirname "$0")"; pwd)
 ROOT_DIR=$(dirname "$CURRENT_DIR")
