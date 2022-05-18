@@ -44,7 +44,7 @@ Available Versions
 - GEOS:
   - Heroku-18: `3.7.2`
   - Heroku-20 + Heroku-22: `3.7.2`, `3.10.2`
-- PROJ: `5.2.0`
+- PROJ: `5.2.0`, `8.2.1`
 
 Migrating from heroku/python GEOs support
 -----------------------------------------
