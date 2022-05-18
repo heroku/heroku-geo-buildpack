@@ -22,6 +22,8 @@ jobs:
             image: heroku/heroku:18-build
           - name: heroku-20
             image: heroku/heroku:20-build
+          - name: heroku-22
+            image: heroku/heroku:22-build
     container: ${{ matrix.stack.image }}
     steps:
       - uses: actions/checkout@v2
