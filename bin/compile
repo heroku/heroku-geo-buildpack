@@ -11,6 +11,7 @@ vendor_lib() {
     mkdir -p "$VENDOR_DIR"
     if ! curl "${LIBRARY_URL}" -s | tar zxv -C "$VENDOR_DIR" &> /dev/null; then
       echo " !     Requested $LIBRARY Version ($VERSION) is not available for this stack ($STACK)."
+      echo " !     See: https://github.com/heroku/heroku-geo-buildpack#available-versions"
       echo " !     Aborting."
       exit 1
     fi
