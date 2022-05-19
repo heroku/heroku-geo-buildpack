@@ -39,7 +39,7 @@ setEnvVar () {
 testDefaultVersionInstall() {
   stdout=$(compile)
   assertEquals "0" "$?"
-  assertContains "$stdout" "-----> Installing GDAL-2.4.0"
+  assertContains "$stdout" "-----> Installing GDAL-3.5.0"
 
   if [[ "${STACK}" == "heroku-18" ]]; then
     assertContains "$stdout" "-----> Installing GEOS-3.7.2"
@@ -47,7 +47,7 @@ testDefaultVersionInstall() {
     assertContains "$stdout" "-----> Installing GEOS-3.10.2"
   fi
 
-  assertContains "$stdout" "-----> Installing PROJ-5.2.0"
+  assertContains "$stdout" "-----> Installing PROJ-8.2.1"
 }
 
 testBuildpackEnv() {
@@ -64,15 +64,15 @@ testBuildpackEnv() {
 testSpecifiedVersionInstall() {
   # The versions here should ideally not match the default versions,
   # so that we're testing that it really overrides the defaults.
-  setEnvVar "GDAL_VERSION" "3.5.0"
+  setEnvVar "GDAL_VERSION" "2.4.0"
   setEnvVar "GEOS_VERSION" "3.7.2"
-  setEnvVar "PROJ_VERSION" "8.2.1"
+  setEnvVar "PROJ_VERSION" "5.2.0"
 
   stdout=$(compile)
   assertEquals "0" "$?"
-  assertContains "$stdout" "-----> Installing GDAL-3.5.0"
+  assertContains "$stdout" "-----> Installing GDAL-2.4.0"
   assertContains "$stdout" "-----> Installing GEOS-3.7.2"
-  assertContains "$stdout" "-----> Installing PROJ-8.2.1"
+  assertContains "$stdout" "-----> Installing PROJ-5.2.0"
 }
 
 testUnavailableVersionInstall() {
