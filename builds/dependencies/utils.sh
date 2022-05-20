@@ -6,7 +6,7 @@ vendor_dependency() {
     VENDOR_DIR=$3
 
     echo "-----> Installing $DEP-$VERSION"
-    DEP_URL="https://bucketeer-9aa8f376-a619-404c-b004-6db0317bcfe8.s3.amazonaws.com/$STACK/$DEP/$DEP-$VERSION.tar.gz"
+    DEP_URL="https://heroku-buildpack-geo.s3.amazonaws.com/${STACK}/${DEP}/${DEP}-${VERSION}.tar.gz"
 
     mkdir -p "$VENDOR_DIR"
     if ! curl "${DEP_URL}" -sSf | tar zxv -C "$VENDOR_DIR"; then
