@@ -4,8 +4,9 @@ vendor_lib() {
     LIBRARY=$1
     VERSION=$2
     VENDOR_DIR=$3
-
-    echo "-----> Installing $LIBRARY-$VERSION"
+    STACK="heroku-20"
+    
+    echo "-----> Installing $STACK/$LIBRARY-$VERSION"
     LIBRARY_URL="https://heroku-buildpack-geo.s3.amazonaws.com/${STACK}/${LIBRARY}/${LIBRARY}-${VERSION}.tar.gz"
 
     mkdir -p "$VENDOR_DIR"
@@ -29,7 +30,7 @@ BP_DIR=$(cd "$(dirname "${0:-}")" || exit 1 ; cd ..; pwd)
 VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor"
 
 DEFAULT_GDAL_VERSION="3.5.0"
-DEFAULT_GEOS_VERSION="3.10.2"
+DEFAULT_GEOS_VERSION="3.7.2"
 DEFAULT_PROJ_VERSION="8.2.1"
 
 if [[ "${STACK}" == "heroku-18" ]]; then
