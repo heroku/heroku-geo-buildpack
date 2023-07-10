@@ -30,7 +30,7 @@ BP_DIR=$(cd "$(dirname "${0:-}")" || exit 1 ; cd ..; pwd)
 VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor"
 
 DEFAULT_GDAL_VERSION="3.5.0"
-DEFAULT_GEOS_VERSION="3.7.2"
+DEFAULT_GEOS_VERSION="3.10.2"
 DEFAULT_PROJ_VERSION="8.2.1"
 
 if [[ "${STACK}" == "heroku-18" ]]; then
