@@ -4,7 +4,7 @@ Heroku Buildpack: Geo
 Heroku Buildpack Geo is a [Heroku buildpack](http://devcenter.heroku.com/articles/buildpacks) that
 installs the Geo/GIS libraries [GDAL](https://www.gdal.org/), [GEOS](https://trac.osgeo.org/geos/) and [PROJ](https://proj4.org/)
 
-It can be used to get [GeoDjango](https://docs.djangoproject.com/en/2.1/ref/contrib/gis/) or [RGeo](https://github.com/rgeo/rgeo) running on Heroku.
+It can be used to get [GeoDjango](https://docs.djangoproject.com/en/4.2/ref/contrib/gis/) or [RGeo](https://github.com/rgeo/rgeo) running on Heroku.
 
 Usage
 -----
@@ -26,9 +26,7 @@ Default Versions
 The buildpack will install the following versions by default *for new apps*:
 
 - GDAL: `3.5.0`
-- GEOS:
-  - Heroku-18: `3.7.2`
-  - Heroku-20 + Heroku-22: `3.10.2`
+- GEOS: `3.10.2`
 - PROJ: `8.2.1`
 
 *Existing apps* that don't specify an explicit version will continue to use the
@@ -41,11 +39,9 @@ Available Versions
 ------------------
 
 - GDAL:
-  - Heroku-18 + Heroku-20: `2.4.0`, `2.4.2`, `3.5.0`
+  - Heroku-20: `2.4.0`, `2.4.2`, `3.5.0`
   - Heroku-22: `3.5.0`
-- GEOS:
-  - Heroku-18: `3.7.2`
-  - Heroku-20 + Heroku-22: `3.7.2`, `3.10.2`
+- GEOS: `3.7.2`, `3.10.2`
 - PROJ: `5.2.0`, `8.2.1`
 
 Migrating from heroku/python GEOs support
