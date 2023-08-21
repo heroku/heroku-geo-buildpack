@@ -40,13 +40,7 @@ testDefaultVersionInstall() {
   stdout=$(compile)
   assertEquals "0" "$?"
   assertContains "$stdout" "-----> Installing GDAL-3.5.0"
-
-  if [[ "${STACK}" == "heroku-18" ]]; then
-    assertContains "$stdout" "-----> Installing GEOS-3.7.2"
-  else
-    assertContains "$stdout" "-----> Installing GEOS-3.10.2"
-  fi
-
+  assertContains "$stdout" "-----> Installing GEOS-3.10.2"
   assertContains "$stdout" "-----> Installing PROJ-8.2.1"
 }
 

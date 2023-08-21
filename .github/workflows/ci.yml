@@ -18,8 +18,6 @@ jobs:
     strategy:
       matrix:
         stack:
-          - name: heroku-18
-            image: heroku/heroku:18-build
           - name: heroku-20
             image: heroku/heroku:20-build
           - name: heroku-22
