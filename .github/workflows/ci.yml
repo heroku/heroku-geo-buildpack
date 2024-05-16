@@ -1,30 +1,31 @@
 name: CI
+
 on:
-  - push
-  - pull_request
+  push:
+    # Avoid duplicate builds on PRs.
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
 
 jobs:
-
   shellcheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: sudo apt-get install shellcheck -y
+      - name: Checkout
+        uses: actions/checkout@v4
       - run: shellcheck -x bin/*
       - run: find . -name "*.sh" -exec shellcheck -x {} \;
 
-  shunit2:
+  test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        stack:
-          - name: heroku-20
-            image: heroku/heroku:20-build
-          - name: heroku-22
-            image: heroku/heroku:22-build
-    container: ${{ matrix.stack.image }}
+        stack_version: ["20", "22"]
     steps:
-      - uses: actions/checkout@v2
-      - run: ./tests.sh
-        env:
-          STACK: ${{ matrix.stack.name }}
+      - name: Checkout
+        uses: actions/checkout@v4
+      - run: make test STACK_VERSION='${{ matrix.stack_version }}'
