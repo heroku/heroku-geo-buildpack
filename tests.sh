@@ -41,6 +41,9 @@ setEnvVar () {
 testDefaultVersionInstall() {
   stdout=$(compile)
   assertEquals "0" "$?"
+  assertContains "$stdout" "-----> GDAL_VERSION is not set. Using the buildpack default: 3.5.0"
+  assertContains "$stdout" "-----> GEOS_VERSION is not set. Using the buildpack default: 3.10.2"
+  assertContains "$stdout" "-----> PROJ_VERSION is not set. Using the buildpack default: 8.2.1"
   assertContains "$stdout" "-----> Installing GDAL-3.5.0"
   assertContains "$stdout" "-----> Installing GEOS-3.10.2"
   assertContains "$stdout" "-----> Installing PROJ-8.2.1"
@@ -48,6 +51,9 @@ testDefaultVersionInstall() {
   # Cached build
   stdout=$(compile)
   assertEquals "0" "$?"
+  assertContains "$stdout" "-----> GDAL_VERSION is not set. Using the same version as the last build: 3.5.0"
+  assertContains "$stdout" "-----> GEOS_VERSION is not set. Using the same version as the last build: 3.10.2"
+  assertContains "$stdout" "-----> PROJ_VERSION is not set. Using the same version as the last build: 8.2.1"
   assertContains "$stdout" "-----> Installing GDAL-3.5.0"
   assertContains "$stdout" "-----> Installing GEOS-3.10.2"
   assertContains "$stdout" "-----> Installing PROJ-8.2.1"
@@ -73,6 +79,9 @@ testSpecifiedVersionInstall() {
 
   stdout=$(compile)
   assertEquals "0" "$?"
+  assertContains "$stdout" "-----> Using GDAL version specified by GDAL_VERSION: 2.4.0"
+  assertContains "$stdout" "-----> Using GEOS version specified by GEOS_VERSION: 3.7.2"
+  assertContains "$stdout" "-----> Using PROJ version specified by PROJ_VERSION: 5.2.0"
   assertContains "$stdout" "-----> Installing GDAL-2.4.0"
   assertContains "$stdout" "-----> Installing GEOS-3.7.2"
   assertContains "$stdout" "-----> Installing PROJ-5.2.0"
@@ -80,6 +89,9 @@ testSpecifiedVersionInstall() {
   # Cached build
   stdout=$(compile)
   assertEquals "0" "$?"
+  assertContains "$stdout" "-----> Using GDAL version specified by GDAL_VERSION: 2.4.0"
+  assertContains "$stdout" "-----> Using GEOS version specified by GEOS_VERSION: 3.7.2"
+  assertContains "$stdout" "-----> Using PROJ version specified by PROJ_VERSION: 5.2.0"
   assertContains "$stdout" "-----> Installing GDAL-2.4.0"
   assertContains "$stdout" "-----> Installing GEOS-3.7.2"
   assertContains "$stdout" "-----> Installing PROJ-5.2.0"
@@ -88,9 +100,10 @@ testSpecifiedVersionInstall() {
 testUnavailableVersionInstall() {
   setEnvVar "GDAL_VERSION" "9.9.9"
 
-  stdout=$(compile)
+  output=$(compile 2>&1)
   assertEquals "1" "$?"
-  assertContains "$stdout" "Requested GDAL Version (9.9.9) is not available for this stack ($STACK)."
+  assertContains "$output" "Error: GDAL version '9.9.9' is not available for this stack ($STACK)."
+  assertContains "$output" "Try requesting a different version using the env var 'GDAL_VERSION'"
 }
 
 command -v shunit2 || {
