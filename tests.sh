@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 BASE_DIR=$(dirname "$0")
 
 oneTimeSetUp () {
@@ -42,6 +44,13 @@ testDefaultVersionInstall() {
   assertContains "$stdout" "-----> Installing GDAL-3.5.0"
   assertContains "$stdout" "-----> Installing GEOS-3.10.2"
   assertContains "$stdout" "-----> Installing PROJ-8.2.1"
+
+  # Cached build
+  stdout=$(compile)
+  assertEquals "0" "$?"
+  assertContains "$stdout" "-----> Installing GDAL-3.5.0"
+  assertContains "$stdout" "-----> Installing GEOS-3.10.2"
+  assertContains "$stdout" "-----> Installing PROJ-8.2.1"
 }
 
 testBuildpackEnv() {
@@ -67,6 +76,13 @@ testSpecifiedVersionInstall() {
   assertContains "$stdout" "-----> Installing GDAL-2.4.0"
   assertContains "$stdout" "-----> Installing GEOS-3.7.2"
   assertContains "$stdout" "-----> Installing PROJ-5.2.0"
+
+  # Cached build
+  stdout=$(compile)
+  assertEquals "0" "$?"
+  assertContains "$stdout" "-----> Installing GDAL-2.4.0"
+  assertContains "$stdout" "-----> Installing GEOS-3.7.2"
+  assertContains "$stdout" "-----> Installing PROJ-5.2.0"
 }
 
 testUnavailableVersionInstall() {
@@ -77,9 +93,8 @@ testUnavailableVersionInstall() {
   assertContains "$stdout" "Requested GDAL Version (9.9.9) is not available for this stack ($STACK)."
 }
 
-
 command -v shunit2 || {
-  curl -sLo /usr/local/bin/shunit2 https://raw.githubusercontent.com/kward/shunit2/master/shunit2
+  curl -sSfL --retry 3 --retry-connrefused --connect-timeout 10 -o /usr/local/bin/shunit2 https://raw.githubusercontent.com/kward/shunit2/master/shunit2
   chmod +x /usr/local/bin/shunit2
 }
 # shellcheck disable=SC1091
