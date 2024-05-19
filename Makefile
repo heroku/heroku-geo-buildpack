@@ -1,5 +1,5 @@
 # These targets are not files
-.PHONY: compile test build-heroku-20 build-heroku-22
+.PHONY: compile test buildenv
 
 STACK_VERSION ?= 22
 STACK := heroku-$(STACK_VERSION)
@@ -21,28 +21,15 @@ test:
 	@docker run --rm --platform=$(PLATFORM) -v "$(PWD):/buildpack:ro" -e "STACK=$(STACK)" "$(BASE_BUILD_IMAGE)" /buildpack/tests.sh
 	@echo
 
-build-heroku-20:
-	@echo "Creating build environment (heroku-20)..."
+buildenv:
+	@echo "Creating build environment using: STACK_VERSION=$(STACK_VERSION)"
+	@echo "To use a different stack, run: 'make buildenv STACK_VERSION=NN'"
 	@echo
-	@docker build --pull -f "$(shell pwd)/builds/Dockerfile-heroku-20" -t buildenv-heroku-20 .
-	@echo
-	@echo "Usage..."
-	@echo
-	@echo "  $$ export S3_BUCKET='heroku-geo-buildpack' # Optional unless deploying"
-	@echo "  $$ export AWS_ACCESS_KEY_ID=foo AWS_SECRET_ACCESS_KEY=bar  # Optional unless deploying"
-	@echo "  $$ ./builds/gdal/gdal-<version>.sh"
-	@echo
-	@docker run -e STACK="heroku-20" -e S3_BUCKET -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -it --rm buildenv-heroku-20
-
-build-heroku-22:
-	@echo "Creating build environment (heroku-22)..."
-	@echo
-	@docker build --pull -f "$(shell pwd)/builds/Dockerfile-heroku-22" -t buildenv-heroku-22 .
+	@docker build --pull --platform=$(PLATFORM) --build-arg="STACK_VERSION=$(STACK_VERSION)" -t "geo-buildenv-$(STACK_VERSION)" ./builds/
 	@echo
 	@echo "Usage..."
 	@echo
-	@echo "  $$ export S3_BUCKET='heroku-geo-buildpack' # Optional unless deploying"
-	@echo "  $$ export AWS_ACCESS_KEY_ID=foo AWS_SECRET_ACCESS_KEY=bar  # Optional unless deploying"
-	@echo "  $$ ./builds/gdal/gdal-<version>.sh"
+	@echo '  $$ docker run --rm -it -v "$${PWD}/upload:/tmp/upload" geo-buildenv-$(STACK_VERSION) ./proj.sh X.Y.Z'
+	@echo '  $$ docker run --rm -it -v "$${PWD}/upload:/tmp/upload" geo-buildenv-$(STACK_VERSION) ./geos.sh X.Y.Z'
+	@echo '  $$ docker run --rm -it -v "$${PWD}/upload:/tmp/upload" geo-buildenv-$(STACK_VERSION) ./gdal.sh X.Y.Z'
 	@echo
-	@docker run -e STACK="heroku-22" -e S3_BUCKET -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -it --rm buildenv-heroku-22
