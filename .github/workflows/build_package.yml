@@ -1,0 +1,57 @@
+name: Build and upload package
+run-name: "Build and upload ${{ inputs.package }} ${{ inputs.version }}${{ inputs.dry_run && ' (dry run)' || '' }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "Package to build"
+        type: choice
+        options:
+          - GDAL
+          - GEOS
+          - PROJ
+        required: true
+      version:
+        description: "Version of the package (X.Y.Z)"
+        type: string
+        required: true
+      dry_run:
+        description: "Skip uploading to S3 (dry run)"
+        type: boolean
+        default: false
+        required: false
+
+permissions:
+  contents: read
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: "us-east-1"
+  S3_BUCKET: "heroku-buildpack-geo"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        stack_version: ["20", "22"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build Docker image
+        run: make buildenv STACK_VERSION=${{ matrix.stack_version }}
+      - name: Compile and package ${{ inputs.package }} ${{ inputs.version }}
+        run: |
+          BUILD_SCRIPT="./$(echo '${{ inputs.package }}' | tr '[:upper:]' '[:lower:]').sh"
+          docker run --rm -v "${PWD}/upload:/tmp/upload" geo-buildenv-${{ matrix.stack_version }} "${BUILD_SCRIPT}" '${{ inputs.version }}'
+      - name: Test package
+        run: |
+          RUN_IMAGE='heroku/heroku:${{ matrix.stack_version }}'
+          ARCHIVE_FILEPATH='/upload/heroku-${{ matrix.stack_version }}/${{ inputs.package }}/${{ inputs.package }}-${{ inputs.version }}.tar.gz'
+          docker run --rm -v "${PWD}/upload:/upload:ro" -v "${PWD}/builds:/builds:ro" "${RUN_IMAGE}" /builds/test_package.sh "${ARCHIVE_FILEPATH}"
+      - name: Upload package to S3
+        if: (!inputs.dry_run)
+        run: aws s3 sync ./upload "s3://${S3_BUCKET}"

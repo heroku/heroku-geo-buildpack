@@ -16,8 +16,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - run: shellcheck -x bin/*
-      - run: find . -name "*.sh" -exec shellcheck -x {} \;
+      - name: Run ShellCheck
+        run: shellcheck --check-sourced --color=always bin/* builds/*.sh tests.sh
 
   test:
     runs-on: ubuntu-latest
@@ -28,4 +28,5 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - run: make test STACK_VERSION='${{ matrix.stack_version }}'
+      - name: Run tests
+        run: make test STACK_VERSION='${{ matrix.stack_version }}'
