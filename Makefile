@@ -1,7 +1,7 @@
 # These targets are not files
 .PHONY: compile test buildenv
 
-STACK_VERSION ?= 22
+STACK_VERSION ?= 24
 STACK := heroku-$(STACK_VERSION)
 BASE_BUILD_IMAGE := heroku/heroku:$(STACK_VERSION)-build
 PLATFORM := linux/amd64
@@ -10,7 +10,7 @@ compile:
 	@echo "Running compile using: STACK_VERSION=$(STACK_VERSION)"
 	@echo "To use a different stack, run: 'make compile STACK_VERSION=NN'"
 	@echo
-	@docker run --rm --platform=$(PLATFORM) -v "$(PWD):/src:ro" -e "STACK=$(STACK)" -w /buildpack "$(BASE_BUILD_IMAGE)" \
+	@docker run --rm --platform=$(PLATFORM) --user root -v "$(PWD):/src:ro" -e "STACK=$(STACK)" -w /buildpack "$(BASE_BUILD_IMAGE)" \
 		bash -c 'cp -r /src/bin /buildpack && mkdir -p /tmp/{build,cache,env} && bin/compile /tmp/build /tmp/cache /tmp/env'
 	@echo
 
@@ -18,7 +18,7 @@ test:
 	@echo "Running tests using: STACK_VERSION=$(STACK_VERSION)"
 	@echo "To use a different stack, run: 'make test STACK_VERSION=NN'"
 	@echo
-	@docker run --rm --platform=$(PLATFORM) -v "$(PWD):/buildpack:ro" -e "STACK=$(STACK)" "$(BASE_BUILD_IMAGE)" /buildpack/tests.sh
+	@docker run --rm --platform=$(PLATFORM) --user root -v "$(PWD):/buildpack:ro" -e "STACK=$(STACK)" "$(BASE_BUILD_IMAGE)" /buildpack/tests.sh
 	@echo
 
 buildenv:
