@@ -6,7 +6,7 @@ vendor_lib() {
     VENDOR_DIR=$3
 
     echo "-----> Installing $LIBRARY-$VERSION"
-    LIBRARY_URL="https://heroku-buildpack-geo.s3.amazonaws.com/${STACK}/${LIBRARY}/${LIBRARY}-${VERSION}.tar.gz"
+    LIBRARY_URL="https://heroku-buildpack-geo.s3.us-east-1.amazonaws.com/${STACK}/${LIBRARY}/${LIBRARY}-${VERSION}.tar.gz"
 
     mkdir -p "$VENDOR_DIR"
     if ! curl -sSf --retry 3 --retry-connrefused --connect-timeout 10 "${LIBRARY_URL}" | tar -zx -C "${VENDOR_DIR}"; then
@@ -29,9 +29,9 @@ BP_DIR=$(cd "$(dirname "${0:-}")" || exit 1 ; cd ..; pwd)
 
 VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor"
 
-DEFAULT_GDAL_VERSION="3.5.0"
-DEFAULT_GEOS_VERSION="3.10.2"
-DEFAULT_PROJ_VERSION="8.2.1"
+DEFAULT_GDAL_VERSION="3.9.0"
+DEFAULT_GEOS_VERSION="3.12.1"
+DEFAULT_PROJ_VERSION="9.4.0"
 
 if [ -f "$ENV_DIR/GDAL_VERSION" ]; then
     GDAL_VERSION=$(cat "$ENV_DIR/GDAL_VERSION")
