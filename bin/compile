@@ -4,8 +4,8 @@ vendor_lib() {
     LIBRARY=$1
     VERSION=$2
     VENDOR_DIR=$3
-    STACK="heroku-22"
-    
+    STACK="heroku-24"
+
     echo "-----> Installing $STACK/$LIBRARY-$VERSION"
     LIBRARY_URL="https://heroku-buildpack-geo.s3.amazonaws.com/${STACK}/${LIBRARY}/${LIBRARY}-${VERSION}.tar.gz"
 
@@ -29,9 +29,9 @@ BP_DIR=$(cd "$(dirname "${0:-}")" || exit 1 ; cd ..; pwd)
 
 VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor"
 
-DEFAULT_GDAL_VERSION="3.5.0"
-DEFAULT_GEOS_VERSION="3.10.2"
-DEFAULT_PROJ_VERSION="8.2.1"
+DEFAULT_GDAL_VERSION="3.9.0"
+DEFAULT_GEOS_VERSION="3.12.1"
+DEFAULT_PROJ_VERSION="9.4.0"
 
 if [[ "${STACK}" == "heroku-18" ]]; then
     # Newer GEOS requires CMake 3.13+ which isn't available on Ubuntu 18.04.
