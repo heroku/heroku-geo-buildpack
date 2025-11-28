@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 BASE_DIR=$(dirname "$0")
 
 oneTimeSetUp () {
@@ -39,15 +41,22 @@ setEnvVar () {
 testDefaultVersionInstall() {
   stdout=$(compile)
   assertEquals "0" "$?"
-  assertContains "$stdout" "-----> Installing GDAL-3.5.0"
+  assertContains "$stdout" "-----> GDAL_VERSION is not set. Using the buildpack default: 3.9.0"
+  assertContains "$stdout" "-----> GEOS_VERSION is not set. Using the buildpack default: 3.12.1"
+  assertContains "$stdout" "-----> PROJ_VERSION is not set. Using the buildpack default: 9.4.0"
+  assertContains "$stdout" "-----> Installing GDAL-3.9.0"
+  assertContains "$stdout" "-----> Installing GEOS-3.12.1"
+  assertContains "$stdout" "-----> Installing PROJ-9.4.0"
 
-  if [[ "${STACK}" == "heroku-18" ]]; then
-    assertContains "$stdout" "-----> Installing GEOS-3.7.2"
-  else
-    assertContains "$stdout" "-----> Installing GEOS-3.10.2"
-  fi
-
-  assertContains "$stdout" "-----> Installing PROJ-8.2.1"
+  # Cached build
+  stdout=$(compile)
+  assertEquals "0" "$?"
+  assertContains "$stdout" "-----> GDAL_VERSION is not set. Using the same version as the last build: 3.9.0"
+  assertContains "$stdout" "-----> GEOS_VERSION is not set. Using the same version as the last build: 3.12.1"
+  assertContains "$stdout" "-----> PROJ_VERSION is not set. Using the same version as the last build: 9.4.0"
+  assertContains "$stdout" "-----> Installing GDAL-3.9.0"
+  assertContains "$stdout" "-----> Installing GEOS-3.12.1"
+  assertContains "$stdout" "-----> Installing PROJ-9.4.0"
 }
 
 testBuildpackEnv() {
@@ -64,28 +73,41 @@ testBuildpackEnv() {
 testSpecifiedVersionInstall() {
   # The versions here should ideally not match the default versions,
   # so that we're testing that it really overrides the defaults.
-  setEnvVar "GDAL_VERSION" "2.4.0"
-  setEnvVar "GEOS_VERSION" "3.7.2"
-  setEnvVar "PROJ_VERSION" "5.2.0"
+  setEnvVar "GDAL_VERSION" "3.8.5"
+  setEnvVar "GEOS_VERSION" "3.11.3"
+  setEnvVar "PROJ_VERSION" "9.4.0"
 
   stdout=$(compile)
   assertEquals "0" "$?"
-  assertContains "$stdout" "-----> Installing GDAL-2.4.0"
-  assertContains "$stdout" "-----> Installing GEOS-3.7.2"
-  assertContains "$stdout" "-----> Installing PROJ-5.2.0"
+  assertContains "$stdout" "-----> Using GDAL version specified by GDAL_VERSION: 3.8.5"
+  assertContains "$stdout" "-----> Using GEOS version specified by GEOS_VERSION: 3.11.3"
+  assertContains "$stdout" "-----> Using PROJ version specified by PROJ_VERSION: 9.4.0"
+  assertContains "$stdout" "-----> Installing GDAL-3.8.5"
+  assertContains "$stdout" "-----> Installing GEOS-3.11.3"
+  assertContains "$stdout" "-----> Installing PROJ-9.4.0"
+
+  # Cached build
+  stdout=$(compile)
+  assertEquals "0" "$?"
+  assertContains "$stdout" "-----> Using GDAL version specified by GDAL_VERSION: 3.8.5"
+  assertContains "$stdout" "-----> Using GEOS version specified by GEOS_VERSION: 3.11.3"
+  assertContains "$stdout" "-----> Using PROJ version specified by PROJ_VERSION: 9.4.0"
+  assertContains "$stdout" "-----> Installing GDAL-3.8.5"
+  assertContains "$stdout" "-----> Installing GEOS-3.11.3"
+  assertContains "$stdout" "-----> Installing PROJ-9.4.0"
 }
 
 testUnavailableVersionInstall() {
   setEnvVar "GDAL_VERSION" "9.9.9"
 
-  stdout=$(compile)
+  output=$(compile 2>&1)
   assertEquals "1" "$?"
-  assertContains "$stdout" "Requested GDAL Version (9.9.9) is not available for this stack ($STACK)."
+  assertContains "$output" "Error: GDAL version '9.9.9' is not available for this stack ($STACK)."
+  assertContains "$output" "Try requesting a different version using the env var 'GDAL_VERSION'"
 }
 
-
 command -v shunit2 || {
-  curl -sLo /usr/local/bin/shunit2 https://raw.githubusercontent.com/kward/shunit2/master/shunit2
+  curl -sSfL --retry 3 --retry-connrefused --connect-timeout 10 -o /usr/local/bin/shunit2 https://raw.githubusercontent.com/kward/shunit2/master/shunit2
   chmod +x /usr/local/bin/shunit2
 }
 # shellcheck disable=SC1091

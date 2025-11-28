@@ -6,14 +6,15 @@ vendor_lib() {
     VENDOR_DIR=$3
     STACK="heroku-24"
 
-    echo "-----> Installing $STACK/$LIBRARY-$VERSION"
-    LIBRARY_URL="https://heroku-buildpack-geo.s3.amazonaws.com/${STACK}/${LIBRARY}/${LIBRARY}-${VERSION}.tar.gz"
+    echo "-----> Installing $LIBRARY-$VERSION"
+    LIBRARY_URL="https://heroku-buildpack-geo.s3.us-east-1.amazonaws.com/${STACK}/${LIBRARY}/${LIBRARY}-${VERSION}.tar.gz"
 
     mkdir -p "$VENDOR_DIR"
-    if ! curl "${LIBRARY_URL}" -s | tar zxv -C "$VENDOR_DIR" &> /dev/null; then
-      echo " !     Requested $LIBRARY Version ($VERSION) is not available for this stack ($STACK)."
-      echo " !     See: https://github.com/heroku/heroku-geo-buildpack#available-versions"
-      echo " !     Aborting."
+    if ! curl -sSf --retry 3 --retry-connrefused --connect-timeout 10 "${LIBRARY_URL}" | tar -zx -C "${VENDOR_DIR}"; then
+      echo " !     Error: ${LIBRARY} version '${VERSION}' is not available for this stack (${STACK})." >&2
+      echo " !     Try requesting a different version using the env var '${LIBRARY}_VERSION', or" >&2
+      echo " !     unset the env var and clear the build cache to use the default version." >&2
+      echo " !     See: https://github.com/heroku/heroku-geo-buildpack#available-versions" >&2
       exit 1
     fi
 
@@ -33,33 +34,37 @@ DEFAULT_GDAL_VERSION="3.9.0"
 DEFAULT_GEOS_VERSION="3.12.1"
 DEFAULT_PROJ_VERSION="9.4.0"
 
-if [[ "${STACK}" == "heroku-18" ]]; then
-    # Newer GEOS requires CMake 3.13+ which isn't available on Ubuntu 18.04.
-    DEFAULT_GEOS_VERSION="3.7.2"
-fi
-
 if [ -f "$ENV_DIR/GDAL_VERSION" ]; then
     GDAL_VERSION=$(cat "$ENV_DIR/GDAL_VERSION")
+    echo "-----> Using GDAL version specified by GDAL_VERSION: ${GDAL_VERSION}."
 elif [ -f "$CACHE_DIR/.heroku-geo-buildpack/GDAL-version" ]; then
     GDAL_VERSION=$(cat "$CACHE_DIR/.heroku-geo-buildpack/GDAL-version")
+    echo "-----> GDAL_VERSION is not set. Using the same version as the last build: ${GDAL_VERSION}."
 else
     GDAL_VERSION=$DEFAULT_GDAL_VERSION
+    echo "-----> GDAL_VERSION is not set. Using the buildpack default: ${GDAL_VERSION}."
 fi
 
 if [ -f "$ENV_DIR/GEOS_VERSION" ]; then
     GEOS_VERSION=$(cat "$ENV_DIR/GEOS_VERSION")
+    echo "-----> Using GEOS version specified by GEOS_VERSION: ${GEOS_VERSION}."
 elif [ -f "$CACHE_DIR/.heroku-geo-buildpack/GEOS-version" ]; then
     GEOS_VERSION=$(cat "$CACHE_DIR/.heroku-geo-buildpack/GEOS-version")
+    echo "-----> GEOS_VERSION is not set. Using the same version as the last build: ${GEOS_VERSION}."
 else
     GEOS_VERSION=$DEFAULT_GEOS_VERSION
+    echo "-----> GEOS_VERSION is not set. Using the buildpack default: ${GEOS_VERSION}."
 fi
 
 if [ -f "$ENV_DIR/PROJ_VERSION" ]; then
     PROJ_VERSION=$(cat "$ENV_DIR/PROJ_VERSION")
+    echo "-----> Using PROJ version specified by PROJ_VERSION: ${PROJ_VERSION}."
 elif [ -f "$CACHE_DIR/.heroku-geo-buildpack/PROJ-version" ]; then
     PROJ_VERSION=$(cat "$CACHE_DIR/.heroku-geo-buildpack/PROJ-version")
+    echo "-----> PROJ_VERSION is not set. Using the same version as the last build: ${PROJ_VERSION}."
 else
     PROJ_VERSION=$DEFAULT_PROJ_VERSION
+    echo "-----> PROJ_VERSION is not set. Using the buildpack default: ${PROJ_VERSION}."
 fi
 
 vendor_lib "GDAL" "$GDAL_VERSION" "$VENDOR_DIR"

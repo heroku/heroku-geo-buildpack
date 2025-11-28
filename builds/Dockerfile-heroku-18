@@ -1,7 +1,0 @@
-FROM heroku/heroku:18-build
-
-RUN apt-get -q update && apt-get -q -y --no-install-recommends install awscli libsqlite3-dev sqlite3
-
-ADD . /heroku-geo-buildpack
-
-WORKDIR "/heroku-geo-buildpack"
