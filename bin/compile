@@ -6,7 +6,7 @@ vendor_lib() {
     VENDOR_DIR=$3
 
     echo "-----> Installing $LIBRARY-$VERSION"
-    LIBRARY_URL="https://heroku-buildpack-geo.s3.us-east-1.amazonaws.com/${STACK}/${LIBRARY}/${LIBRARY}-${VERSION}.tar.gz"
+    LIBRARY_URL="https://heroku-buildpack-geo.s3.dualstack.us-east-1.amazonaws.com/${STACK}/${LIBRARY}/${LIBRARY}-${VERSION}.tar.gz"
 
     mkdir -p "$VENDOR_DIR"
     if ! curl -sSf --retry 3 --retry-connrefused --connect-timeout 10 "${LIBRARY_URL}" | tar -zx -C "${VENDOR_DIR}"; then
