@@ -40,22 +40,20 @@ Available Versions
 ------------------
 
 - GDAL:
-  - `2.4.0` (Heroku-20 only)
-  - `2.4.2` (Heroku-20 only)
-  - `3.5.0` (Heroku-20 and Heroku-22 only)
+  - `3.5.0` (Heroku-22 only)
   - `3.6.4`
   - `3.7.3`
   - `3.8.5`
   - `3.9.0`
 - GEOS:
-  - `3.7.2` (Heroku-20 and Heroku-22 only)
-  - `3.10.2` (Heroku-20 and Heroku-22 only)
+  - `3.7.2` (Heroku-22 only)
+  - `3.10.2` (Heroku-22 only)
   - `3.10.6`
   - `3.11.3`
   - `3.12.1`
 - PROJ:
-  - `5.2.0` (Heroku-20 and Heroku-22 only)
-  - `8.2.1` (Heroku-20 and Heroku-22 only)
+  - `5.2.0` (Heroku-22 only)
+  - `8.2.1` (Heroku-22 only)
   - `9.4.0`
 
 Migrating from heroku/python GEO support
