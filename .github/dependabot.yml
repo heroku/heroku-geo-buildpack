@@ -4,7 +4,3 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-    labels:
-      - "dependencies"
-      - "github actions"
-      - "skip changelog"
