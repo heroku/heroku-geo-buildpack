@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Run ShellCheck
         run: shellcheck --check-sourced --color=always bin/* builds/*.sh tests.sh
 
@@ -27,6 +27,6 @@ jobs:
         stack_version: ["22", "24"]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Run tests
         run: make test STACK_VERSION='${{ matrix.stack_version }}'
