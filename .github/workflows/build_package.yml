@@ -40,7 +40,7 @@ jobs:
         stack_version: ["22", "24"]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Build Docker image
         run: make buildenv STACK_VERSION=${{ matrix.stack_version }}
       - name: Compile and package ${{ inputs.package }} ${{ inputs.version }}
