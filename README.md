@@ -25,9 +25,9 @@ Default Versions
 
 The buildpack will install the following versions by default *for new apps*:
 
-- GDAL: `3.9.0`
-- GEOS: `3.12.1`
-- PROJ: `9.4.0`
+- GDAL: `3.12.3`
+- GEOS: `3.14.1`
+- PROJ: `9.8.1`
 
 Note: *Existing apps* that don't specify an explicit version will continue to use the
 version used by the last successful build (unless the
@@ -40,21 +40,19 @@ Available Versions
 ------------------
 
 - GDAL:
-  - `3.5.0` (Heroku-22 only)
-  - `3.6.4`
-  - `3.7.3`
-  - `3.8.5`
-  - `3.9.0`
+  - `3.9.3`
+  - `3.10.3`
+  - `3.11.5`
+  - `3.12.3`
 - GEOS:
-  - `3.7.2` (Heroku-22 only)
-  - `3.10.2` (Heroku-22 only)
-  - `3.10.6`
-  - `3.11.3`
-  - `3.12.1`
+  - `3.10.7`
+  - `3.11.5`
+  - `3.12.3`
+  - `3.13.1`
+  - `3.14.1`
 - PROJ:
-  - `5.2.0` (Heroku-22 only)
-  - `8.2.1` (Heroku-22 only)
-  - `9.4.0`
+  - `9.7.1`
+  - `9.8.1`
 
 Migrating from heroku/python GEO support
 ----------------------------------------

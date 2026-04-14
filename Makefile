@@ -1,7 +1,7 @@
 # These targets are not files
 .PHONY: compile test buildenv
 
-STACK_VERSION ?= 24
+STACK_VERSION ?= 26
 STACK := heroku-$(STACK_VERSION)
 BASE_BUILD_IMAGE := heroku/heroku:$(STACK_VERSION)-build
 PLATFORM := linux/amd64

@@ -29,9 +29,9 @@ BP_DIR=$(cd "$(dirname "${0:-}")" || exit 1 ; cd ..; pwd)
 
 VENDOR_DIR="$BUILD_DIR/.heroku-geo-buildpack/vendor"
 
-DEFAULT_GDAL_VERSION="3.9.0"
-DEFAULT_GEOS_VERSION="3.12.1"
-DEFAULT_PROJ_VERSION="9.4.0"
+DEFAULT_GDAL_VERSION="3.12.3"
+DEFAULT_GEOS_VERSION="3.14.1"
+DEFAULT_PROJ_VERSION="9.8.1"
 
 if [ -f "$ENV_DIR/GDAL_VERSION" ]; then
     GDAL_VERSION=$(cat "$ENV_DIR/GDAL_VERSION")
