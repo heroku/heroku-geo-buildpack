@@ -41,22 +41,22 @@ setEnvVar () {
 testDefaultVersionInstall() {
   stdout=$(compile)
   assertEquals "0" "$?"
-  assertContains "$stdout" "-----> GDAL_VERSION is not set. Using the buildpack default: 3.9.0"
-  assertContains "$stdout" "-----> GEOS_VERSION is not set. Using the buildpack default: 3.12.1"
-  assertContains "$stdout" "-----> PROJ_VERSION is not set. Using the buildpack default: 9.4.0"
-  assertContains "$stdout" "-----> Installing GDAL-3.9.0"
-  assertContains "$stdout" "-----> Installing GEOS-3.12.1"
-  assertContains "$stdout" "-----> Installing PROJ-9.4.0"
+  assertContains "$stdout" "-----> GDAL_VERSION is not set. Using the buildpack default: 3.12.3"
+  assertContains "$stdout" "-----> GEOS_VERSION is not set. Using the buildpack default: 3.14.1"
+  assertContains "$stdout" "-----> PROJ_VERSION is not set. Using the buildpack default: 9.8.1"
+  assertContains "$stdout" "-----> Installing GDAL-3.12.3"
+  assertContains "$stdout" "-----> Installing GEOS-3.14.1"
+  assertContains "$stdout" "-----> Installing PROJ-9.8.1"
 
   # Cached build
   stdout=$(compile)
   assertEquals "0" "$?"
-  assertContains "$stdout" "-----> GDAL_VERSION is not set. Using the same version as the last build: 3.9.0"
-  assertContains "$stdout" "-----> GEOS_VERSION is not set. Using the same version as the last build: 3.12.1"
-  assertContains "$stdout" "-----> PROJ_VERSION is not set. Using the same version as the last build: 9.4.0"
-  assertContains "$stdout" "-----> Installing GDAL-3.9.0"
-  assertContains "$stdout" "-----> Installing GEOS-3.12.1"
-  assertContains "$stdout" "-----> Installing PROJ-9.4.0"
+  assertContains "$stdout" "-----> GDAL_VERSION is not set. Using the same version as the last build: 3.12.3"
+  assertContains "$stdout" "-----> GEOS_VERSION is not set. Using the same version as the last build: 3.14.1"
+  assertContains "$stdout" "-----> PROJ_VERSION is not set. Using the same version as the last build: 9.8.1"
+  assertContains "$stdout" "-----> Installing GDAL-3.12.3"
+  assertContains "$stdout" "-----> Installing GEOS-3.14.1"
+  assertContains "$stdout" "-----> Installing PROJ-9.8.1"
 }
 
 testBuildpackEnv() {
@@ -73,28 +73,28 @@ testBuildpackEnv() {
 testSpecifiedVersionInstall() {
   # The versions here should ideally not match the default versions,
   # so that we're testing that it really overrides the defaults.
-  setEnvVar "GDAL_VERSION" "3.8.5"
-  setEnvVar "GEOS_VERSION" "3.11.3"
-  setEnvVar "PROJ_VERSION" "9.4.0"
+  setEnvVar "GDAL_VERSION" "3.11.5"
+  setEnvVar "GEOS_VERSION" "3.13.1"
+  setEnvVar "PROJ_VERSION" "9.7.1"
 
   stdout=$(compile)
   assertEquals "0" "$?"
-  assertContains "$stdout" "-----> Using GDAL version specified by GDAL_VERSION: 3.8.5"
-  assertContains "$stdout" "-----> Using GEOS version specified by GEOS_VERSION: 3.11.3"
-  assertContains "$stdout" "-----> Using PROJ version specified by PROJ_VERSION: 9.4.0"
-  assertContains "$stdout" "-----> Installing GDAL-3.8.5"
-  assertContains "$stdout" "-----> Installing GEOS-3.11.3"
-  assertContains "$stdout" "-----> Installing PROJ-9.4.0"
+  assertContains "$stdout" "-----> Using GDAL version specified by GDAL_VERSION: 3.11.5"
+  assertContains "$stdout" "-----> Using GEOS version specified by GEOS_VERSION: 3.13.1"
+  assertContains "$stdout" "-----> Using PROJ version specified by PROJ_VERSION: 9.7.1"
+  assertContains "$stdout" "-----> Installing GDAL-3.11.5"
+  assertContains "$stdout" "-----> Installing GEOS-3.13.1"
+  assertContains "$stdout" "-----> Installing PROJ-9.7.1"
 
   # Cached build
   stdout=$(compile)
   assertEquals "0" "$?"
-  assertContains "$stdout" "-----> Using GDAL version specified by GDAL_VERSION: 3.8.5"
-  assertContains "$stdout" "-----> Using GEOS version specified by GEOS_VERSION: 3.11.3"
-  assertContains "$stdout" "-----> Using PROJ version specified by PROJ_VERSION: 9.4.0"
-  assertContains "$stdout" "-----> Installing GDAL-3.8.5"
-  assertContains "$stdout" "-----> Installing GEOS-3.11.3"
-  assertContains "$stdout" "-----> Installing PROJ-9.4.0"
+  assertContains "$stdout" "-----> Using GDAL version specified by GDAL_VERSION: 3.11.5"
+  assertContains "$stdout" "-----> Using GEOS version specified by GEOS_VERSION: 3.13.1"
+  assertContains "$stdout" "-----> Using PROJ version specified by PROJ_VERSION: 9.7.1"
+  assertContains "$stdout" "-----> Installing GDAL-3.11.5"
+  assertContains "$stdout" "-----> Installing GEOS-3.13.1"
+  assertContains "$stdout" "-----> Installing PROJ-9.7.1"
 }
 
 testUnavailableVersionInstall() {

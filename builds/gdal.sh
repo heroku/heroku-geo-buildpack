@@ -18,10 +18,10 @@ echo "Building GDAL ${VERSION} for ${STACK}..."
 set -o xtrace
 
 # GDAL 3.0.0+ requires PROJ at build time.
-vendor_dependency "PROJ" "9.4.0" "${INSTALL_DIR}"
+vendor_dependency "PROJ" "9.8.1" "${INSTALL_DIR}"
 
 # The optional GEOS features require that GEOS be available at build time.
-vendor_dependency "GEOS" "3.12.1" "${INSTALL_DIR}"
+vendor_dependency "GEOS" "3.14.1" "${INSTALL_DIR}"
 
 # The optional KML features require that libkml be installed. The libkml headers and libs were
 # installed in the build environment for this script using APT, but the libs won't be present
